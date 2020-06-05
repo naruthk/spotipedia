@@ -1,0 +1,28 @@
+.container {
+  ul {
+    @apply flex items-center justify-end;
+
+    :last-child {
+      @apply mr-0;
+    }
+  }
+  li {
+    @apply mr-10;
+  
+  }
+}
+
+.icon {
+  @apply text-xl font-thin text-gray-700;
+}
+
+.deviceStatus {
+  @apply text-right;
+
+  h1 {
+    @apply text-sm text-gray-400;
+  }
+  h2 {
+    @apply font-bold;
+  }
+}

@@ -18,7 +18,7 @@
   @apply flex flex-wrap items-center justify-between;
 
   .songName {
-    @apply text-lg font-bold;
+    @apply text-xl font-bold;
   }
   .timestamp {
     @apply text-sm text-gray-500;

@@ -1,0 +1,14 @@
+.container {
+  @apply flex flex-row;
+}
+
+.information {
+  @apply w-1/4;
+  .albumCover {
+    @apply w-full;
+  }
+}
+
+.lyricsWrapper {
+  @apply flex-grow;
+}
