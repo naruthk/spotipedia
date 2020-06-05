@@ -1,0 +1,37 @@
+.container {
+  @apply flex flex-grow items-center;
+}
+
+.artwork {
+  @apply w-16 flex-none mr-5;
+
+  .albumCover {
+    @apply rounded-lg;
+  }
+}
+
+.playerInformation {
+  @apply w-full mr-5;
+}
+
+.information {
+  @apply flex flex-wrap items-center justify-between;
+
+  .songName {
+    @apply text-lg font-bold;
+  }
+  .timestamp {
+    @apply text-sm text-gray-500;
+  }
+}
+
+.progressBar {
+  @apply flex flex-auto h-1 mt-2;
+
+  .foreground {
+    @apply bg-orange-500;
+  }
+  .background {
+    @apply bg-gray-200;
+  }
+}

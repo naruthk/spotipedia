@@ -1,0 +1,13 @@
+.container {
+  @apply w-64 h-full;
+  @apply bg-gray-300;
+}
+
+.accountInfo {
+  h1 {
+    @apply text-lg font-bold;
+  }
+  h2 {
+    @apply text-base;
+  }
+}

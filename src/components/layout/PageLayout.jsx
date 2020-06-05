@@ -1,0 +1,27 @@
+import React from "react";
+import PropTypes from "prop-types";
+import Head from 'next/head';
+
+import Header from "../header/Header";
+import Footer from "../footer/Footer";
+
+export default function PageLayout({ title, children }) {
+  return (
+    <>
+      {/* <Head>
+        <title>{title} - Spotify Lyrics</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head> */}
+      <div className="layout">
+        <Header />
+        {children}
+        <Footer />
+      </div>
+    </>
+  );
+}
+
+PageLayout.propTypes = {
+  title: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
+};

@@ -1,0 +1,12 @@
+.container {
+  @apply flex items-center;
+  @apply ml-5;
+}
+
+.icon {
+  @apply text-2xl font-thin mx-4;
+}
+
+.large {
+  @apply text-4xl;
+}
