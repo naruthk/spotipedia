@@ -5,10 +5,10 @@ import Head from 'next/head';
 export default function Layout({ children }) {
   return (
     <>
-      {/* <Head>
+      <Head>
         <title>Spotify Lyrics</title>
         <link rel="icon" href="/favicon.ico" />
-      </Head> */}
+      </Head>
       {children}
     </>
   );

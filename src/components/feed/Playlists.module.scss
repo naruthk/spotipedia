@@ -1,0 +1,31 @@
+.container {
+  h1 {
+    @apply text-4xl font-bold mb-10;
+  }
+
+  h2 {
+    @apply leading-tight text-gray-600;
+  }
+
+  ul {
+    @apply flex overflow-x-scroll -mx-10;
+    @apply mb-5 pb-5;
+
+    li:first-of-type {
+      @apply ml-10;
+    }
+  }
+
+  li {
+    @apply w-64 table mr-5;
+  }
+
+  .albumBackground {
+    @apply h-64 mb-2;
+    @apply bg-gray-100;
+
+    img {
+      @apply shadow-lg w-full h-full object-cover;
+    }
+  }
+}

@@ -37,14 +37,16 @@ export default function Navigation() {
               </button>
           }
         </li>
-        <li>
-          <section className={styles.deviceStatus}>
-            <h1>Currently playing on</h1>
-            <h2>
-              {activeSong && activeSong.device && activeSong.device.name}
-            </h2>
-          </section>
-        </li>
+        {activeSong && (
+          <li>
+            <section className={styles.deviceStatus}>
+              <h1>Currently playing on</h1>
+              <h2>
+                {activeSong && activeSong.device && activeSong.device.name}
+              </h2>
+            </section>
+          </li>
+        )}
       </ul>
     </div>
   )

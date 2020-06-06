@@ -8,7 +8,7 @@ export default function Home() {
   const { isLoggedIn } = useContext(AuthContext);
 
   useEffect(() => {
-    if (isLoggedIn) Router.replace("/dashboard");
+    if (isLoggedIn) Router.replace("/app");
   }, [])
 
   return (

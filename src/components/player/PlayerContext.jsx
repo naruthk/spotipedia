@@ -13,7 +13,8 @@ const SPOTIFY_AUTH_BASE_URL = "/api/spotify";
 export const PlayerProvider = props => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [trackListing, setTrackListing] = useState([]);
-  const [activeSong, setActiveSong] = useState(null); 
+  const [activeSong, setActiveSong] = useState(null);
+  const [isOpeningSongDetail, setIsOpeningSongDetail] = useState(true);
 
   const { user } = useContext(AuthContext);
 
@@ -56,7 +57,9 @@ export const PlayerProvider = props => {
         isPlaying,
         setIsPlaying,
         trackListing,
-        activeSong
+        activeSong,
+        isOpeningSongDetail,
+        setIsOpeningSongDetail
       }}
     >
       {props.children}

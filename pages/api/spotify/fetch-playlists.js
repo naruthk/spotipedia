@@ -1,11 +1,11 @@
 import spotify from "./data";
 import { log, LOG_LEVELS } from "../../../src/utils/logger";
 
-export default async (req, res) => {
+export default async function fetchPlaylists(req, res) {
   if (!req.body.accessToken) return res.status(401).send("Unauthorized access");
 
   const response = await spotify
-    .get("/me",
+    .get("/me/playlists",
       {
         headers: {
           "Content-Type": "application/json",
@@ -15,22 +15,30 @@ export default async (req, res) => {
     )
     .catch(err => {
       log({
-        message: "Unable to authenticate user with Spotify: ",
+        message: "Unable to get playlists: ",
         err,
         level: LOG_LEVELS.INFO
       });
 
       throw err;
     });
-  
-  if (!response) return res.status(400);
 
-  const { display_name: displayName, country, images, product } = response.data;
+  const { items, limit, next, previous, total } = response.data;
+
+  const data = items.map(item => {
+    return {
+      id: item.id,
+      name: item.name,
+      images: item.images,
+      tracks: item.tracks
+    };
+  });
 
   res.status(200).json({
-    displayName,
-    country,
-    images,
-    product
+    data,
+    limit,
+    next,
+    previous,
+    total
   });
-};
+}

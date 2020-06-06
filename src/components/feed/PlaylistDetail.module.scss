@@ -1,0 +1,25 @@
+.container {
+  .backButton {
+    @apply text-blue-600 mb-2;
+  }
+
+  h1 {
+    @apply text-3xl font-bold leading-tight mb-10;
+  }
+
+  .playlistDetail {
+    @apply flex flex-row;
+  }
+
+  .sidebar {
+    @apply w-1/4 mr-10;
+    
+    img {
+      @apply shadow-xl;
+    }
+  }
+
+  .trackListing {
+    @apply flex-grow;
+  }
+}

@@ -1,5 +1,5 @@
 .container {
-  @apply flex flex-row;
+  @apply flex flex-col flex-grow;
 }
 
 .information {
@@ -7,8 +7,4 @@
   .albumCover {
     @apply w-full;
   }
-}
-
-.lyricsWrapper {
-  @apply flex-grow;
 }

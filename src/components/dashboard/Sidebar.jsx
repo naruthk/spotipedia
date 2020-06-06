@@ -1,24 +1,16 @@
 import React, { useContext, useState } from 'react';
 
-import { AuthContext } from "../auth/AuthContext";
 import { PlayerContext } from "../player/PlayerContext";
 
 import styles from "./Sidebar.module.scss";
 
 export default function Sidebar() {
-  const [isSelected, setIsSelected] = useState(false);
-  const [selectedArtistIndex, setSelectedArtistIndex] = useState(0);
-  const { user } = useContext(AuthContext);
+  const [selectedArtist, setSelectedArtist] = useState(null);
   const { activeSong } = useContext(PlayerContext);
 
   if (!activeSong) return null;
 
   const { album, artists, songName } = activeSong;
-
-  const getMoreSong = e => {
-    e.preventDefault();
-    alert("Coming soon")
-  }
 
   return (
     <div className={styles.container}>
@@ -30,30 +22,16 @@ export default function Sidebar() {
         />
       )}
       <div className={styles.artistsInformation}>
-        <h1>
-          {`Get to know the artist${artists && artists.length > 1 && "s" || ""}`}
-        </h1>
+        <h1>{songName}</h1>
+        <h2>
+          {`artist${artists && artists.length > 1 && "s" || ""}`}
+        </h2>
         <ul>
-          {activeSong.artists.map((artist, index) => (
+          {artists.map(artist => (
             <li>
-              <h2
-                onClick={() => {
-                  setIsSelected(!isSelected);
-                  setSelectedArtistIndex(index)
-                }}>
-                {artist}
-              </h2>
-              {isSelected && selectedArtistIndex === index && (
-                <>
-                  <p>A rising superstar in Asia, Singto is a Thai singer who gained popularity with the song Love From My Hometown (2001).</p>
-                  <button
-                    onClick={getMoreSong}
-                    title={`More songs by ${artist}`}
-                  >
-                    More songs by {artist}
-                  </button>
-                </>
-              )}
+              <h3 onClick={() => setSelectedArtist(artist)}>
+                {artist.name}
+              </h3>
             </li>
           ))}
         </ul>

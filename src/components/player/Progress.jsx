@@ -9,7 +9,12 @@ export default function Progress() {
   const [timeElapsed, setTimeElapsed] = useState(null);
   const [formattedElapsedTime, setFormattedElapsedTime] = useState("");
 
-  const { isPlaying, activeSong } = useContext(PlayerContext);
+  const {
+    isPlaying,
+    activeSong,
+    isOpeningSongDetail,
+    setIsOpeningSongDetail
+  } = useContext(PlayerContext);
 
   useEffect(() => {
     let interval = null;
@@ -38,7 +43,10 @@ export default function Progress() {
  
   return (
     <div className={styles.container}>
-      <div className={styles.artwork}>
+      <div
+        className={styles.artwork}
+        onClick={() => setIsOpeningSongDetail(!isOpeningSongDetail)}
+      >
         {activeSong && activeSong.album.images && (
           <img
             className={styles.albumCover}

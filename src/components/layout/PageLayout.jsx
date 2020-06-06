@@ -5,14 +5,16 @@ import Head from 'next/head';
 import Header from "../header/Header";
 import Footer from "../footer/Footer";
 
+import styles from "./PageLayout.module.scss";
+
 export default function PageLayout({ title, children }) {
   return (
     <>
-      {/* <Head>
+      <Head>
         <title>{title} - Spotify Lyrics</title>
         <link rel="icon" href="/favicon.ico" />
-      </Head> */}
-      <div className="layout">
+      </Head>
+      <div className={styles.container}>
         <Header />
         {children}
         <Footer />

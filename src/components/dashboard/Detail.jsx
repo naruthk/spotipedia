@@ -1,21 +1,37 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 
-import { AuthContext } from "../auth/AuthContext";
 import { PlayerContext } from "../player/PlayerContext";
+import Playlists from "../feed/Playlists";
+import PlaylistDetail from "../feed/PlaylistDetail";
+import PlaybackDetail from "../playback/PlaybackDetail";
 
 import styles from "./Detail.module.scss";
 
 export default function Detail() {
-  const { user } = useContext(AuthContext);
-  const { activeSong } = useContext(PlayerContext);
+  const { isOpeningSongDetail, setIsOpeningSongDetail } = useContext(PlayerContext);
+
+  const [selectedPlaylist, setSelectedPlaylist] = useState(null);
+  const [isOpeningPlaylistDetail, setIsOpeningPlaylistDetail] = useState(false);
 
   return (
     <div className={styles.container}>
-      <div className={styles.lyricsWrapper}>
-        <p>Find lyrics using Genius crawl via Cheerio</p>
-        <p>Using terminal to search / play song?....</p>
-        <p>Dark mode</p>
-      </div>
+      {isOpeningSongDetail
+        ? <PlaybackDetail setIsOpeningSongDetail={setIsOpeningSongDetail} />
+        : (!isOpeningPlaylistDetail
+          ? (
+              <Playlists
+                setSelectedPlaylist={setSelectedPlaylist}
+                setIsOpeningPlaylistDetail={setIsOpeningPlaylistDetail}
+              />
+            )
+          : (
+              <PlaylistDetail
+                playlist={selectedPlaylist}
+                setIsOpeningPlaylistDetail={setIsOpeningPlaylistDetail}
+              />
+            )
+        )
+      }
     </div>
   )
 }

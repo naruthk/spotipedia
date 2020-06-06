@@ -7,7 +7,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;700;900&display=swap');
 
 html, body, #__next {
-  @apply h-full select-none;
+  @apply h-full overflow-x-hidden;
 }
 
 body {

@@ -1,13 +1,18 @@
 .container {
-  @apply flex flex-col w-screen h-full;
+  @apply flex flex-col h-full;
+  @apply select-none;
+  @apply overflow-x-hidden;
 }
 
 .app {
   @apply flex flex-row flex-1;
+  @apply mb-24;
+  @apply overflow-x-hidden;
 }
 
 .contextSwitcherContainer {
-  @apply flex-grow p-10;
+  @apply ml-64 flex-grow p-5;
+  @apply overflow-x-hidden;
 }
 
 .searchInput {

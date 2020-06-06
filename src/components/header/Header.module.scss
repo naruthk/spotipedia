@@ -1,0 +1,18 @@
+.container {
+  @apply m-5 pb-5;
+  @apply border-b-2 border-solid border-gray-100;
+
+  nav {
+    ul {
+      @apply flex;
+    
+      :last-child {
+        @apply mr-0;
+      }
+    
+      li {
+        @apply mr-10;
+      }
+    }
+  }
+}

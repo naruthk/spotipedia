@@ -1,5 +1,5 @@
 .container {
-  // @apply fixed bottom-0 p-5;
-  @apply flex flex-wrap items-center;
-  @apply m-5;
+  @apply fixed bottom-0 p-5;
+  @apply flex flex-wrap items-center justify-between;
+  @apply bg-white z-10 w-full;
 }

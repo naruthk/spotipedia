@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import axios from "axios";
 import Router from 'next/router';
 
+import Loading from "./Loading";
 import { getHashParams, generateRandomString } from "../../utils/strings";
 
 export const AuthContext = React.createContext();
@@ -17,12 +18,18 @@ const SCOPES_LIST = [
   "user-read-currently-playing",
   "user-read-playback-position",
   "user-read-playback-state",
-  "user-modify-playback-state"
+  "user-read-recently-played",
+  "user-modify-playback-state",
+  "user-library-read",
+  "playlist-read-private"
+
 ];
 
 export const AuthProvider = props => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
+  const [playlists, setPlaylists] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const resetData = () => {
     localStorage.removeItem(stateKey);
@@ -63,6 +70,8 @@ export const AuthProvider = props => {
       }
       
       if (accessToken) {
+        setIsLoading(true);
+
         const userResponse = await axios
           .post(`${SPOTIFY_AUTH_BASE_URL}/authenticate`, {
             accessToken: accessToken
@@ -71,13 +80,25 @@ export const AuthProvider = props => {
             return;
           });
 
-        if (!userResponse) return;
-  
-        setUser(userResponse.data);
-        setIsLoggedIn(true);
-        localStorage.setItem("token", accessToken);
+        const playlistsResponse = await axios
+          .post(`${SPOTIFY_AUTH_BASE_URL}/fetch-playlists`, {
+            accessToken: accessToken
+          })
+          .catch(err => {
+            return;
+          });
 
-        Router.replace("/dashboard");
+        if (!userResponse || !playlistsResponse) return;
+  
+        setUser({
+          user: userResponse.data,
+          playlists: playlistsResponse.data
+        });
+
+        setIsLoggedIn(true);
+        setIsLoading(false);
+        localStorage.setItem("token", accessToken);
+        Router.replace("/app");
       }
     };
 
@@ -87,13 +108,14 @@ export const AuthProvider = props => {
   return (
     <AuthContext.Provider
       value={{
-        user,
+        user: user && user.user,
+        playlists: user && user.playlists,
         login,
         logout: () => resetData(),
         isLoggedIn
       }}
     >
-      {props.children}
+      {isLoading ? <Loading /> : props.children}
     </AuthContext.Provider>
   );
 };

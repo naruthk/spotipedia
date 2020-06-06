@@ -1,0 +1,12 @@
+.container {
+  @apply m-5 pt-5;
+  @apply border-t-2 border-solid border-gray-100;
+
+  h1 {
+    @apply font-bold;
+  }
+
+  p {
+    @apply text-sm mt-2 leading-tight;
+  }
+}
