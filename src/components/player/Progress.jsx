@@ -5,7 +5,8 @@ import { millisToMinutesAndSeconds } from "../../utils/time";
 
 import styles from "./Progress.module.scss";
 
-export default function Progress() {    
+export default function Progress() {   
+  const [timer, setTimer] = useState(null); 
   const [timeElapsed, setTimeElapsed] = useState(null);
   const [formattedElapsedTime, setFormattedElapsedTime] = useState("");
 
@@ -17,27 +18,24 @@ export default function Progress() {
   } = useContext(PlayerContext);
 
   useEffect(() => {
-    let interval = null;
-
     if (!activeSong) return;
 
     if (!isPlaying) {
-      clearInterval(interval);
+      clearInterval(timer);
       return;
     }
 
     if (timeElapsed >= activeSong.duration) {
-      clearInterval(interval);
+      clearInterval(timer);
       // updateSong();
     }
 
-    interval = setInterval(() => {
-      setTimeElapsed(activeSong.timeElapsed = activeSong.timeElapsed + 1);
-    }, 1000);
+    setTimer(setInterval(() => {
+      setTimeElapsed(activeSong.timeElapsed + 1);
+    }, 1000));
 
-    return () => clearInterval(interval);
-  
-  }, [isPlaying, timeElapsed, activeSong]);
+    return () => clearInterval(timer);
+  }, [isPlaying, activeSong, timeElapsed]);
 
   if (!activeSong) return null;
  
@@ -59,7 +57,7 @@ export default function Progress() {
         <section className={styles.information}>
           <h1 className={styles.songName}>{activeSong.songName}</h1>
           <p className={styles.timestamp}>
-            {timeElapsed} / {activeSong.duration}
+            {timeElapsed} / {millisToMinutesAndSeconds(activeSong.duration)}
           </p>
         </section>
         <div className={styles.progressBar}>

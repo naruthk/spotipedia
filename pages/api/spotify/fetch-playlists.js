@@ -23,6 +23,15 @@ export default async function fetchPlaylists(req, res) {
       throw err;
     });
 
+  if (response.status === 401) {
+    log({
+      message: "Unable to get current playback: Token expired",
+      level: LOG_LEVELS.INFO
+    });
+
+    return res.status(401).json(null);
+  }
+
   const { items, limit, next, previous, total } = response.data;
 
   const data = items.map(item => {

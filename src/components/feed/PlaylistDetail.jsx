@@ -8,7 +8,7 @@ export default function PlaylistDetail({
 }) {
   if (!playlist) return null;
 
-  const { name, images } = playlist;
+  const { name, images, tracks } = playlist;
 
   return (
     <div className={styles.container}>
@@ -22,6 +22,7 @@ export default function PlaylistDetail({
       <main className={styles.playlistDetail}>
         <sidebar className={styles.sidebar}>
           {images.length >= 1 && <img alt={name} src={images[0].url} />}
+          {tracks.total} songs
         </sidebar>
         <div className={styles.trackListing}>
           <ul>

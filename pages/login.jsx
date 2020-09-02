@@ -10,7 +10,6 @@ export default function Home() {
     <PageLayout title="Login">
       <section className="LoginComponent">
         <section className="auth">
-          <h1>Spotify Lyric</h1>
           <button
             id="login_button"
             className="button --big --bg-dark"

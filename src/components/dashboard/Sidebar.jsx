@@ -8,7 +8,13 @@ export default function Sidebar() {
   const [selectedArtist, setSelectedArtist] = useState(null);
   const { activeSong } = useContext(PlayerContext);
 
-  if (!activeSong) return null;
+  if (!activeSong) return (
+    <div className={styles.container}>
+      <section>
+        <h1>Nothing is being played right now.</h1>
+      </section>
+    </div>
+  );
 
   const { album, artists, songName } = activeSong;
 
@@ -24,7 +30,7 @@ export default function Sidebar() {
       <div className={styles.artistsInformation}>
         <h1>{songName}</h1>
         <h2>
-          {`artist${artists && artists.length > 1 && "s" || ""}`}
+          {`by artist${artists && artists.length > 1 && "s" || ""}`}
         </h2>
         <ul>
           {artists.map(artist => (

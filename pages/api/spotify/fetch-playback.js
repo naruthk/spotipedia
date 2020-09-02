@@ -32,6 +32,15 @@ export default async function getCurrentPlayback(req, res) {
     return res.status(400).json(null);
   }
 
+  if (response.status === 401) {
+    log({
+      message: "Unable to get current playback: Token expired",
+      level: LOG_LEVELS.INFO
+    });
+
+    return res.status(401).json(null);
+  }
+
   const { device, item, progress_ms } = response.data;
 
   const { id, album, artists, duration_ms, name } = item;
