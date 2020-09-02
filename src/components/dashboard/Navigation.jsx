@@ -1,12 +1,16 @@
 import React, { useContext, useState } from 'react';
-import { FaSearch, FaTerminal, FaRegTimesCircle } from "react-icons/fa";
+import { FaSearch, FaHome } from "react-icons/fa";
 
 import { PlayerContext } from "../player/PlayerContext";
 
 import styles from "./Navigation.module.scss";
 
 export default function Navigation() {
-  const { activeSong } = useContext(PlayerContext);
+  const {
+    activeSong,
+    isOpeningSongDetail,
+    setIsOpeningSongDetail
+  } = useContext(PlayerContext);
   const [isSearchInputActive, setSearchInputActive] = useState(false);
 
   return (
@@ -18,6 +22,17 @@ export default function Navigation() {
       }}
     >
       <ul>
+        <li>
+          {isOpeningSongDetail && (
+            <button
+              title="Home"
+              className={styles.homeButton}
+              onClick={() => setIsOpeningSongDetail(false)}
+            >
+              <FaHome className={styles.icon} />
+            </button>
+          )}
+        </li>
         <li>
           {
             isSearchInputActive

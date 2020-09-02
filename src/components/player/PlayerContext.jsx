@@ -14,7 +14,7 @@ export const PlayerProvider = props => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [trackListing, setTrackListing] = useState([]);
   const [activeSong, setActiveSong] = useState(null);
-  const [isOpeningSongDetail, setIsOpeningSongDetail] = useState(true);
+  const [isOpeningSongDetail, setIsOpeningSongDetail] = useState(false);
 
   const { user } = useContext(AuthContext);
 

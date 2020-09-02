@@ -8,17 +8,9 @@ export default function PlaybackDetail({ setIsOpeningSongDetail }) {
 
   return (
     <div className={styles.container}>
-      <button
-        className={styles.backButton}
-        onClick={() => setIsOpeningSongDetail(false)}
-      >
-        Go Home
-      </button>
-
       <div className={styles.lyricsWrapper}>
         <p>Find lyrics using Genius crawl via Cheerio</p>
         <p>Using terminal to search / play song?....</p>
-        <p>Dark mode</p>
       </div>
       {/* <h1>{name}</h1>
       <main className={styles.playlistDetail}>

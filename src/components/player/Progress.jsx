@@ -5,8 +5,7 @@ import { millisToMinutesAndSeconds } from "../../utils/time";
 
 import styles from "./Progress.module.scss";
 
-export default function Progress() {   
-  const [timer, setTimer] = useState(null); 
+export default function Progress() {
   const [timeElapsed, setTimeElapsed] = useState(null);
   const [formattedElapsedTime, setFormattedElapsedTime] = useState("");
 
@@ -18,6 +17,7 @@ export default function Progress() {
   } = useContext(PlayerContext);
 
   useEffect(() => {
+    let timer = null;
     if (!activeSong) return;
 
     if (!isPlaying) {
@@ -30,9 +30,9 @@ export default function Progress() {
       // updateSong();
     }
 
-    setTimer(setInterval(() => {
-      setTimeElapsed(activeSong.timeElapsed + 1);
-    }, 1000));
+    timer = setInterval(() => {
+      setTimeElapsed(activeSong.timeElapsed = activeSong.timeElapsed + 1);
+    }, 1000);
 
     return () => clearInterval(timer);
   }, [isPlaying, activeSong, timeElapsed]);
@@ -49,7 +49,7 @@ export default function Progress() {
           <img
             className={styles.albumCover}
             src={activeSong.album.images[0]}
-            alt={activeSong.songName}
+            title={activeSong.songName}
           />
         )}
       </div>

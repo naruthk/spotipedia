@@ -3,7 +3,7 @@
 }
 
 .artwork {
-  @apply w-16 flex-none mr-5;
+  @apply w-16 flex-none mr-5 cursor-pointer;
 
   .albumCover {
     @apply rounded-lg;

@@ -1,0 +1,24 @@
+.container {
+  background-image: url("/static/images/unsplash_yannis-papanastasopoulos-yWF2LLan-_o_1920.jpg"); 
+  min-height: 400px;
+  @apply bg-center bg-cover relative;
+  @apply flex flex-col justify-evenly items-center;
+}
+
+.buttonLogin {
+  @apply border-0 cursor-pointer outline-none px-8 py-6 bg-gray-900 rounded-lg;
+  @apply text-green-300 text-lg font-bold;
+}
+
+.artworkCreditSection {
+  @apply absolute right-0 bottom-0 px-4 cursor-pointer;
+  @apply mb-2 text-right;
+}
+
+.artworkCreditAuthor {
+  @apply text-white font-light text-sm leading-tight;
+}
+
+.artworkCreditService {
+  @apply text-right text-gray-200 font-hairline text-xs leading-none;
+}

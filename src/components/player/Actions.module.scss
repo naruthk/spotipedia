@@ -1,6 +1,9 @@
 .container {
   @apply flex items-center;
-  @apply ml-5;
+  @apply mt-2;
+  @media only screen and (min-width: 600px) {
+    @apply ml-5;
+  }
 }
 
 .icon {

@@ -13,8 +13,7 @@ export default function Home() {
 
   return (
     <PageLayout title="Home">
-      <h1>Welcome</h1>
-      <p>Main page</p>
+      <h1>Landing page</h1>
     </PageLayout>
   )
 }
