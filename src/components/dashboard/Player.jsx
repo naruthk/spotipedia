@@ -1,9 +1,9 @@
 import React, { useEffect, useContext } from 'react';
 
-import { PlayerContext } from "./PlayerContext";
-import Controls from './Controls';
-import Progress from './Progress';
-import Actions from './Actions';
+import { PlayerContext } from "../player/PlayerContext";
+import Controls from '../player/Controls';
+import Progress from '../player/Progress';
+// import Actions from '../player/Actions';
 
 import styles from "./Player.module.scss";
 
@@ -18,7 +18,7 @@ export default function Player() {
     <div className={styles.container}>
       <Controls />
       <Progress />
-      <Actions />
+      {/* <Actions /> */}
     </div>
   )
 }

@@ -1,0 +1,8 @@
+.container {
+  @apply flex flex-col justify-center items-center;
+  @apply h-screen;
+}
+
+h1.title {
+  @apply text-2xl font-bold leading-normal mb-4;
+}

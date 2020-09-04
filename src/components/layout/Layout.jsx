@@ -6,7 +6,7 @@ export default function Layout({ children }) {
   return (
     <>
       <Head>
-        <title>Spotify Lyrics</title>
+        <title>Spotipedia</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {children}

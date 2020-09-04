@@ -11,7 +11,7 @@ export default function PageLayout({ title, children }) {
   return (
     <>
       <Head>
-        <title>{title} - Spotify Lyrics</title>
+        <title>{title} - Spotipedia</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={styles.container}>

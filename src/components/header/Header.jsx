@@ -12,7 +12,7 @@ export default function Header() {
     <header className={styles.container}>
       <nav>
         <ul>
-          <li><Link href="/">Home</Link></li>
+          <li className={styles.home}><Link href="/">Spotipedia</Link></li>
           {!isLoggedIn && <li><Link href="/login">Login</Link></li>}
           <li>Support</li>
         </ul>

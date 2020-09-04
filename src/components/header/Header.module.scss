@@ -1,6 +1,5 @@
 .container {
-  @apply m-5 pb-5;
-  @apply border-b-2 border-solid border-gray-100;
+  @apply m-5;
 
   nav {
     ul {
@@ -15,4 +14,8 @@
       }
     }
   }
+}
+
+.home {
+  @apply font-bold;
 }

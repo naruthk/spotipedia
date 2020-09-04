@@ -1,23 +1,13 @@
-# 🎤  Spotify Lyrics
+# 🎤  Spotipedia
 
-🎧 🎹 Show currently playing song and its lyrics 🎸 🪕
+🎧 🎹 Shows currently playing song and information about the song and artists 🎸 🪕
 
-A **Next.js** application that connects to your Spotify account to display your currently playing song and its lyrics.
+A **Next.js** application that connects to your Spotify account to display information about songs and artists.
 
-## Background
+## Caution
 
-Unlike its mobile app, the Spotify web application (as of May 4, 2020) does not have the ability to display lyrical information for a currently playing song. So I created **Spotify Lyrics** to achieve this.
-
-But please note that my app does not have full functionalities like the actual Spotify web application. It might not be a good idea if you're looking to rely on this as your actual Spotify web player 🤹‍♂️.
+Please don't treat this as a replacement for the official Spotify Web Player. Spotipedia does not have support full functionalities like device selection, volume control, etc.
 
 ## Architecture
 
-Next.js (powered by React), Axios, Cheerio (scraping Genius website)
-
-## Remaining Tasks / Improvements
-
-- Logout function
-- Unit tests coverage
-- Player controls
-- Improve progress bar
-- UI enhancement
+Next.js (powered by React), Axios
