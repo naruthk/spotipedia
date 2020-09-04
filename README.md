@@ -10,4 +10,6 @@ Please don't treat this as a replacement for the official Spotify Web Player. Sp
 
 ## Architecture
 
-Next.js (powered by React), Axios
+- Next.js (powered by React)
+- Axios
+- Tailwind CSS and Styled Components for user interface 

@@ -1,5 +1,4 @@
-import React from 'react';
-
+import React from "react";
 import styles from "./Callback.module.scss";
 
 export default function Loading() {

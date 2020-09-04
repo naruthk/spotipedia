@@ -9,27 +9,15 @@ import { getHashParams, generateRandomString } from "../../utils/strings";
 export const AuthContext = React.createContext();
 export const useAuthContext = () => useContext(AuthContext);
 
-const stateKey = 'spotify_auth_state';
+const stateKey = "spotify_auth_state";
 const SPOTIFY_AUTH_BASE_URL = "/api/spotify";
-
-const SCOPES_LIST = [
-  "user-read-private",
-  "user-read-email",
-  "user-read-currently-playing",
-  "user-read-playback-position",
-  "user-read-playback-state",
-  "user-read-recently-played",
-  "user-modify-playback-state",
-  "user-library-read",
-  "playlist-read-private"
-
-];
+const SCOPES_LIST = process.env.NEXT_PUBLIC_SPOTIFY_SCOPE.split(",");
 
 export const AuthProvider = props => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState(null);
   const [playlists, setPlaylists] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
 
   const resetData = () => {
     localStorage.removeItem(stateKey);
@@ -47,9 +35,8 @@ export const AuthProvider = props => {
     url += '&redirect_uri=' + encodeURIComponent(process.env.NEXT_PUBLIC_SPOTIFY_REDIRECT_URI);
     url += '&state=' + encodeURIComponent(state);
 
-    localStorage.setItem(stateKey, state);
-
-    window.location.href = url;
+    localStorage.setItem(stateKey, state); // allows for browser refresh without always calling authentication
+    window.location.href = url; // takes user to Spotify authentication service
   };
 
   /**
@@ -64,11 +51,9 @@ export const AuthProvider = props => {
       const storedState = localStorage.getItem(stateKey);
 
       if (!accessToken) accessToken = localStorage.getItem("token");
-      
       if (accessToken && (state === null || state !== storedState)) {
         resetData();
       }
-      
       if (accessToken) {
         setIsLoading(true);
 
@@ -98,7 +83,7 @@ export const AuthProvider = props => {
         setIsLoggedIn(true);
         setIsLoading(false);
         localStorage.setItem("token", accessToken);
-        Router.replace("/app");
+        Router.replace("/app"); // redirects the user to the dashboard
       }
     };
 
@@ -125,9 +110,16 @@ AuthProvider.propTypes = {
   user: PropTypes.shape({
     displayName: PropTypes.string,
     profileImage: PropTypes.string
+  }),
+  playlists: PropTypes.shape({
+    data: PropTypes.arrayOf({
+      id: PropTypes.string,
+      name: PropTypes.string
+    })
   })
 };
 
 AuthProvider.defaultProps = {
-  user: null
+  user: null,
+  playlists: null
 };
