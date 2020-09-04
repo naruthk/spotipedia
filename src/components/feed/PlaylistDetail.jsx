@@ -5,30 +5,30 @@ import { PlayerContext } from "../player/PlayerContext";
 import styles from "./PlaylistDetail.module.scss";
 
 const displayTrackListing = (listing, setSong) => {
-  if (!listing || Object.keys(listing).length === 0 || listing && listing.data && listing.data.length === 0) return;
+  if (!listing || Object.keys(listing).length === 0) return;
 
   return (
     <ul className={styles.songDetailListWrapper}>
-    {listing.data.map((song, index) => {
-      const { name, images, artists } = song;
-      return (
-        <li
-          className={styles.songDetailList} key={`${name}-${index}`}
-          onClick={() => setSong(song)}
-        >
-          <h3 className={styles.index}>{index + 1}</h3>
-          <img
-            className={styles.artwork}
-            src={images && images[0]}
-            title={name}
-          />
-          <div>
-            <h2 className={styles.songName}>{name}</h2>
-            <p className={styles.artists}>{artists.map(artist => artist.name).join(", ")}</p>
-          </div>
-        </li>
-      );
-    })}
+      {listing.data.map((song, index) => {
+        const { albumUri, name, images, artists } = song;
+        return (
+          <li
+            className={styles.songDetailList} key={`${name}-${index}`}
+            onClick={() => setSong({ contextUri: albumUri, updateMethod: "play" })}
+          >
+            <h3 className={styles.index}>{index + 1}</h3>
+            <img
+              className={styles.artwork}
+              src={images && images[0]}
+              title={name}
+            />
+            <div>
+              <h2 className={styles.songName}>{name}</h2>
+              <p className={styles.artists}>{artists.map(artist => artist.name).join(", ")}</p>
+            </div>
+          </li>
+        );
+      })}
     </ul>
   );
 };
@@ -39,7 +39,7 @@ export default function PlaylistDetail({
 }) {
   if (!playlist) return null;
 
-  const { selectedPlaylistDetail, setSelectedSong } = useContext(PlayerContext);
+  const { selectedPlaylistDetail, updateCurrentlyPlayingSong } = useContext(PlayerContext);
 
   const { name, images, tracks } = playlist;
 
@@ -60,7 +60,7 @@ export default function PlaylistDetail({
           {images.length >= 1 && <img alt={name} src={images[0].url} />}
         </aside>
         <div className={styles.trackListing}>
-          {displayTrackListing(selectedPlaylistDetail, setSelectedSong)}
+          {displayTrackListing(selectedPlaylistDetail, updateCurrentlyPlayingSong)}
         </div>
       </main>
     </div>

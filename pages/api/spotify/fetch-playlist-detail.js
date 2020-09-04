@@ -4,6 +4,7 @@ import { log, LOG_LEVELS } from "../../../src/utils/logger";
 const resolveTracksinPlaylist = items => {
   return items.map(item => {
     const { track, added_at: addedAt } = item;
+
     const artists_names_list = track.album.artists.map(artist => {
       return {
         id: artist.id,
@@ -12,10 +13,11 @@ const resolveTracksinPlaylist = items => {
       }
     });
     const album_images_list = track.album.images.map(image => image.url);
-
+  
     return {
       id: track.id,
-      uri: track.uri,
+      trackUri: track.uri,
+      albumUri: track.album.uri,
       addedAt,
       duration: track.duration_ms,
       name: track.name,
@@ -29,7 +31,7 @@ const resolveTracksinPlaylist = items => {
 export default async function fetchPlaylistDetail(req, res) {
   if (!req.body.accessToken) return res.status(401).send("Unauthorized access");
 
-  if (!req.body.apiUrl) return res.status(404).send({});
+  if (!req.body.apiUrl) return res.status(400).send({});
 
   const response = await spotify
     .get(req.body.apiUrl,
@@ -47,7 +49,7 @@ export default async function fetchPlaylistDetail(req, res) {
         level: LOG_LEVELS.INFO
       });
 
-      throw err;
+      return res.status(400).json({});
     });
 
   if (response.status === 401) {

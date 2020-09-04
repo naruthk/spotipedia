@@ -20,7 +20,7 @@ export default async function getCurrentPlayback(req, res) {
         level: LOG_LEVELS.INFO
       });
 
-      throw err;
+      return res.status(400).json({});
     });
 
   if (response.status === 204) {
@@ -29,7 +29,7 @@ export default async function getCurrentPlayback(req, res) {
       level: LOG_LEVELS.INFO
     });
 
-    return res.status(400).json(null);
+    return res.status(400).json({});
   }
 
   if (response.status === 401) {
@@ -38,10 +38,12 @@ export default async function getCurrentPlayback(req, res) {
       level: LOG_LEVELS.INFO
     });
 
-    return res.status(401).json(null);
+    return res.status(401).json({});
   }
 
   const { device, item, progress_ms } = response.data;
+
+  if (!item) return res.status(400).json({});
 
   const { id, album, artists, duration_ms, name } = item;
 
@@ -57,6 +59,7 @@ export default async function getCurrentPlayback(req, res) {
 
   res.status(200).json({
     device: {
+      id: device.id,
       name: device.name,
       type: device.type,
       is_active: device.is_active,

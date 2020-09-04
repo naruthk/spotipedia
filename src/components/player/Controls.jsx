@@ -9,11 +9,17 @@ export default function Controls() {
   const {
     isPlaying,
     setIsPlaying,
+    updateCurrentlyPlayingSong,
     skipPrevious,
-    skipForward
+    skipNext
   } = useContext(PlayerContext);
 
   const toggleState = () => {
+    if (isPlaying) {
+      updateCurrentlyPlayingSong({ updateMethod: "pause"});
+    } else {
+      updateCurrentlyPlayingSong({ updateMethod: "play"});
+    }
     setIsPlaying(!isPlaying);
   }
 
@@ -25,7 +31,10 @@ export default function Controls() {
       >
         <FaStepBackward className={styles.icon} />
       </button>
-      <button onClick={toggleState} title={isPlaying ? "Pause" : "Play"}>
+      <button
+        onClick={toggleState}
+        title={isPlaying ? "Pause" : "Play"}
+      >
         {isPlaying
           ? <FaPause className={[styles.icon, styles.large].join(" ")} />
           : <FaPlay className={[styles.icon, styles.large].join(" ")} />
@@ -33,7 +42,7 @@ export default function Controls() {
       </button>
       <button
         title="Next"
-        onClick={() => skipForward()}
+        onClick={() => skipNext()}
       >
         <FaStepForward className={styles.icon} />
       </button>

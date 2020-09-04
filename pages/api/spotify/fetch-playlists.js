@@ -26,10 +26,10 @@ export default async function fetchPlaylists(req, res) {
           level: LOG_LEVELS.INFO
         });
     
-        return res.status(401).json(null);
+        return res.status(401).json({});
       }
 
-      throw err;
+      return res.status(400).json({});
     });
 
   const { items, limit, next, previous, total } = response.data;

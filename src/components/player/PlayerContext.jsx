@@ -20,7 +20,6 @@ const getAccessToken = () => {
 export const PlayerProvider = props => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [activeSong, setActiveSong] = useState(null);
-  const [selectedSong, setSelectedSong] = useState(null);
   const [isOpeningSongDetail, setIsOpeningSongDetail] = useState(false);
   
   const [selectedPlaylist, setSelectedPlaylist] = useState(null);
@@ -36,7 +35,7 @@ export const PlayerProvider = props => {
 
     const response = await axios
       .post(`${SPOTIFY_AUTH_BASE_URL}/fetch-playback`, {
-        accessToken: accessToken,
+        accessToken,
         market: user && user.country
       })
       .catch(err => {
@@ -72,7 +71,7 @@ export const PlayerProvider = props => {
 
       const response = await axios
         .post(`${SPOTIFY_AUTH_BASE_URL}/fetch-playlist-detail`, {
-          accessToken: accessToken,
+          accessToken,
           apiUrl: selectedPlaylist && selectedPlaylist.tracks.href
         })
         .catch(err => {
@@ -89,40 +88,38 @@ export const PlayerProvider = props => {
     return;
   }, [selectedPlaylist]);
 
-  /**
-   * Play the selected song
-   */
-  useEffect(() => {
-    const fetchUpdateCurrentPlayback = async () => {
-      const accessToken = getAccessToken();
-      if (!accessToken) return;
+  const fetchUpdateCurrentPlayback = async ({
+    contextUri,
+    positionMs = 0,
+    updateMethod
+  }) => {
+    const accessToken = getAccessToken();
+    if (!accessToken) return;
 
-      // const response = await axios
-      //   .post(`${SPOTIFY_AUTH_BASE_URL}/update-current-playback`, {
-      //     accessToken: accessToken,
-      //     apiUrl: selectedPlaylist && selectedPlaylist.tracks.href
-      //   })
-      //   .catch(err => {
-      //     // TO-DO: Do something
-      //   });
+    const response = await axios
+      .post(`${SPOTIFY_AUTH_BASE_URL}/update-playback-state`, {
+        accessToken: accessToken,
+        contextUri,
+        positionMs,
+        updateMethod,
+        deviceId: activeSong && activeSong.device && activeSong.device.id
+      })
+      .catch(err => {
+        // TO-DO: Do something
+      });
 
-      // if (!response) return;
+    if (!response) return;
 
-      // fetchPlaybackStatus();
-    };
+    if (contextUri) fetchPlaybackStatus();
+  };
 
-    fetchUpdateCurrentPlayback();
-
-    return;
-  }, []);
-
-  const skipPreviousOrForward = async direction => {
+  const skipPreviousOrNext = async direction => {
     const accessToken = getAccessToken();
     if (!accessToken) return;
 
     const response = await axios
       .post(`${SPOTIFY_AUTH_BASE_URL}/skip-prev-next-track`, {
-        accessToken: accessToken,
+        accessToken,
         skipDirection: direction
       })
       .catch(err => {
@@ -131,8 +128,7 @@ export const PlayerProvider = props => {
 
     if (!response) return;
 
-    setActiveSong(response.data);
-    setIsPlaying(true);
+    fetchPlaybackStatus();
   };
 
   return (
@@ -143,14 +139,14 @@ export const PlayerProvider = props => {
         activeSong,
         isOpeningSongDetail,
         setIsOpeningSongDetail,
-        setSelectedSong,
+        updateCurrentlyPlayingSong: props => fetchUpdateCurrentPlayback(props),
         selectedPlaylist,
         setSelectedPlaylist,
         selectedPlaylistDetail,
         selectedArtist,
         setSelectedArtist,
-        skipPrevious: () => skipPreviousOrForward("previous"),
-        skipForward: () => skipPreviousOrForward("forward")
+        skipPrevious: () => skipPreviousOrNext("previous"),
+        skipNext: () => skipPreviousOrNext("next")
       }}
     >
       {props.children}

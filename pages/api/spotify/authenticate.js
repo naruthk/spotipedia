@@ -23,7 +23,7 @@ export default async (req, res) => {
       throw err;
     });
   
-  if (!response) return res.status(400);
+  if (!response) return res.status(400).json({});
 
   const { display_name: displayName, country, images, product } = response.data;
 
