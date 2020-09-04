@@ -13,6 +13,13 @@ const stateKey = "spotify_auth_state";
 const SPOTIFY_AUTH_BASE_URL = "/api/spotify";
 const SCOPES_LIST = process.env.NEXT_PUBLIC_SPOTIFY_SCOPE.split(",");
 
+/**
+ * Context for authentication. Authentication takes place via a web interface
+ * connected through Spotify APIs. When logged in, the information such as the
+ * user's information, device the song is currently playing on, and saved
+ * playlists are downloaded.
+ * @param {object} props 
+ */
 export const AuthProvider = props => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -34,8 +41,9 @@ export const AuthProvider = props => {
     url += '&redirect_uri=' + encodeURIComponent(process.env.NEXT_PUBLIC_SPOTIFY_REDIRECT_URI);
     url += '&state=' + encodeURIComponent(state);
 
-    localStorage.setItem(stateKey, state); // allows for browser refresh without always calling authentication
-    window.location.href = url; // takes user to Spotify authentication service
+    // Stores the generated state key, then redirects to the authentication URL
+    localStorage.setItem(stateKey, state);
+    window.location.href = url;
   };
 
   /**
@@ -56,6 +64,7 @@ export const AuthProvider = props => {
       if (accessToken) {
         setIsLoading(true);
 
+        // Loads the user's profile and saved playlists
         const userResponse = await axios
           .post(`${SPOTIFY_AUTH_BASE_URL}/authenticate`, {
             accessToken: accessToken
@@ -81,8 +90,9 @@ export const AuthProvider = props => {
 
         setIsLoggedIn(true);
         setIsLoading(false);
+
         localStorage.setItem("token", accessToken);
-        Router.replace("/app"); // redirects the user to the dashboard
+        Router.replace("/app");
       }
     };
 

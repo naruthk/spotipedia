@@ -33,7 +33,7 @@ export default function Navigation() {
             </button>
           )}
         </li>
-        <li>
+        {/* <li>
           {
             isSearchInputActive
             ? 
@@ -51,7 +51,7 @@ export default function Navigation() {
                 <FaSearch className={styles.icon} />
               </button>
           }
-        </li>
+        </li> */}
         {activeSong && (
           <li>
             <section className={styles.deviceStatus}>

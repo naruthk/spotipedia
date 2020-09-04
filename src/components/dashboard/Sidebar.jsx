@@ -4,9 +4,12 @@ import { PlayerContext } from "../player/PlayerContext";
 
 import styles from "./Sidebar.module.scss";
 
+/**
+ * Shows artist information of the actively playing song.
+ * User can click on the name of an individual artist to learn more.
+ */
 export default function Sidebar() {
-  const [selectedArtist, setSelectedArtist] = useState(null);
-  const { activeSong } = useContext(PlayerContext);
+  const { activeSong, setSelectedArtist } = useContext(PlayerContext);
 
   if (!activeSong) return (
     <div className={styles.container}>
@@ -34,7 +37,7 @@ export default function Sidebar() {
         </h2>
         <ul>
           {artists.map(artist => (
-            <li>
+            <li key={artist.name}>
               <h3 onClick={() => setSelectedArtist(artist)}>
                 {artist.name}
               </h3>

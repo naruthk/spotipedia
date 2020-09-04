@@ -14,6 +14,8 @@ const resolveTracksinPlaylist = items => {
     const album_images_list = track.album.images.map(image => image.url);
 
     return {
+      id: track.id,
+      uri: track.uri,
       addedAt,
       duration: track.duration_ms,
       name: track.name,
@@ -26,6 +28,8 @@ const resolveTracksinPlaylist = items => {
 
 export default async function fetchPlaylistDetail(req, res) {
   if (!req.body.accessToken) return res.status(401).send("Unauthorized access");
+
+  if (!req.body.apiUrl) return res.status(404).send({});
 
   const response = await spotify
     .get(req.body.apiUrl,

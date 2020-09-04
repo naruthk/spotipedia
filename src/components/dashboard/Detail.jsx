@@ -7,6 +7,11 @@ import PlaybackDetail from "../playback/PlaybackDetail";
 
 import styles from "./Detail.module.scss";
 
+/**
+ * Determines whether or not (A) or (B) should be shown at any given time
+ * A) Detail about the chosen song that is being played
+ * B) Detail about a selected playlist
+ */
 export default function Detail() {
   const {
     isOpeningSongDetail,

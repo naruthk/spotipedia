@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./Callback.module.scss";
 
-export default function Loading() {
+export default function Callback() {
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Authorizing ...</h1>

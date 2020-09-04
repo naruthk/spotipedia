@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import Router from 'next/router';
 
 import { AuthContext } from "../auth/AuthContext";
 
@@ -15,12 +16,15 @@ export default function Playlists({
       <h1>My Playlists</h1>
       <ul>
         {playlists && playlists.data.map(playlist => {
-          const { name, images, tracks } = playlist;
+          const { name, images } = playlist;
           return (
-            <li onClick={() => {
-              setSelectedPlaylist(playlist);
-              setIsOpeningPlaylistDetail(true);
-            }}>
+            <li
+              key={name}
+              onClick={() => {
+                setSelectedPlaylist(playlist);
+                setIsOpeningPlaylistDetail(true);
+              }}
+            >
               <div className={styles.albumBackground}>
                 {images.length >= 1 && <img alt={name} src={images[0].url} />}
               </div>

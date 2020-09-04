@@ -16,6 +16,10 @@ const ContextSwitcher = styled.div`
   `}
 `;
 
+/**
+ * Dashboard displays the interface of the sidebar, player controls,
+ * and main information about the artists or songs 
+ */
 export default function Dashboard() {
   const { activeSong } = useContext(PlayerContext);
 

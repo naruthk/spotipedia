@@ -32,6 +32,12 @@
   @apply w-16 mr-5 cursor-pointer rounded-lg;
 }
 
+.songDetailListWrapper {
+  li:hover {
+    @apply bg-gray-200;
+  }
+}
+
 .songDetailList {
   @apply mb-4 flex flex-row items-center;
 }
@@ -44,6 +50,6 @@
   @apply mt-0 text-gray-600;
 }
 
-.popularityIndex {
-  @apply text-gray-600 mr-2;
+.index {
+  @apply text-gray-600 ml-2 mr-4 w-8 text-center;
 }
