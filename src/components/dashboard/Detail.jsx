@@ -8,9 +8,13 @@ import PlaybackDetail from "../playback/PlaybackDetail";
 import styles from "./Detail.module.scss";
 
 export default function Detail() {
-  const { isOpeningSongDetail, setIsOpeningSongDetail } = useContext(PlayerContext);
+  const {
+    isOpeningSongDetail,
+    setIsOpeningSongDetail,
+    selectedPlaylist,
+    setSelectedPlaylist
+  } = useContext(PlayerContext);
 
-  const [selectedPlaylist, setSelectedPlaylist] = useState(null);
   const [isOpeningPlaylistDetail, setIsOpeningPlaylistDetail] = useState(false);
 
   return (

@@ -13,16 +13,20 @@ const SPOTIFY_AUTH_BASE_URL = "/api/spotify";
 export const PlayerProvider = props => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [trackListing, setTrackListing] = useState([]);
+  const [selectedPlaylist, setSelectedPlaylist] = useState(null);
+  const [selectedPlaylistDetail, setSelectedPlaylistDetail] = useState({});
   const [activeSong, setActiveSong] = useState(null);
   const [isOpeningSongDetail, setIsOpeningSongDetail] = useState(false);
 
   const { user } = useContext(AuthContext);
 
+  /**
+   * Looks up currently playing song and the device it is being played on
+   */
   useEffect(() => {
     const fetchPlaybackStatus = async () => {
       const params = getHashParams();
       let { access_token: accessToken } = params;
-
       if (!accessToken) accessToken = localStorage.getItem("token");
       
       if (accessToken) {
@@ -51,6 +55,38 @@ export const PlayerProvider = props => {
     }
   }, []);
 
+  /**
+   * Looks up songs for a particular playlist that is chosen
+   */
+  useEffect(() => {
+    const fetchPlaylistDetail = async () => {
+      const params = getHashParams();
+      let { access_token: accessToken } = params;
+      if (!accessToken) accessToken = localStorage.getItem("token");
+      
+      if (accessToken) {
+        const response = await axios
+          .post(`${SPOTIFY_AUTH_BASE_URL}/fetch-playlist-detail`, {
+            accessToken: accessToken,
+            apiUrl: selectedPlaylist && selectedPlaylist.tracks.href
+          })
+          .catch(err => {
+            // TO-DO: Do something
+          });
+  
+        if (!response) return;
+
+        setSelectedPlaylistDetail(response.data);
+      }
+    };
+
+    fetchPlaylistDetail();
+    
+    return () => {
+      return null;
+    }
+  }, [selectedPlaylist]);
+
   return (
     <PlayerContext.Provider
       value={{
@@ -59,7 +95,10 @@ export const PlayerProvider = props => {
         trackListing,
         activeSong,
         isOpeningSongDetail,
-        setIsOpeningSongDetail
+        setIsOpeningSongDetail,
+        selectedPlaylist,
+        setSelectedPlaylist,
+        selectedPlaylistDetail
       }}
     >
       {props.children}

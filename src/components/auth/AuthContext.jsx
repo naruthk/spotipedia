@@ -17,7 +17,6 @@ export const AuthProvider = props => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState(null);
-  const [playlists, setPlaylists] = useState([]);
 
   const resetData = () => {
     localStorage.removeItem(stateKey);
