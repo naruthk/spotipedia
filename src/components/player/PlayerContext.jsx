@@ -105,10 +105,10 @@ export const PlayerProvider = props => {
         deviceId: activeSong && activeSong.device && activeSong.device.id
       })
       .catch(err => {
-        // TO-DO: Do something
+        setIsPlaying(false);
       });
 
-    if (!response) return;
+    if (!response) return setIsPlaying(false);
 
     if (contextUri) fetchPlaybackStatus();
   };

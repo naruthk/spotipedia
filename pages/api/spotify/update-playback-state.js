@@ -6,6 +6,10 @@ const UPDATE_METHODS_ENUM = {
   PAUSE: "pause"
 };
 
+const SPOTIFY_API_REASON_CODE_MAP = {
+  NO_ACTIVE_DEVICE: "An active device could not be found."
+};
+
 export default async function updatePlaybackState(req, res) {
   if (!req.body.accessToken) return res.status(401).send("Unauthorized access");
 
@@ -53,7 +57,12 @@ export default async function updatePlaybackState(req, res) {
         level: LOG_LEVELS.INFO
       });
 
-      return res.status(400).json({});
+      const { status, message } = err.response && err.response.data && err.response.data.error;
+
+      return res.status(status).json({
+        code: status,
+        message: message && SPOTIFY_API_REASON_CODE_MAP[message] || "Sorry something went wrong."
+      });
     });
 
   if (!response) return res.status(400).json({});

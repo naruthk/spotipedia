@@ -1,8 +1,10 @@
 import spotify from "./data";
 import { log, LOG_LEVELS } from "../../../src/utils/logger";
+import { SPOTIFY_API_STATUS_OUTPUT_FUNC_MAP } from "../../../src/utils/apisHelper";
 
 export default async function getCurrentPlayback(req, res) {
-  if (!req.body.accessToken) return res.status(401).send("Unauthorized access");
+  if (!req.body.accessToken)
+    return SPOTIFY_API_STATUS_OUTPUT_FUNC_MAP.ERROR_401(res);
 
   const response = await spotify
     .get(`/me/player?market=${req.body.market || "US"}`,
@@ -20,16 +22,21 @@ export default async function getCurrentPlayback(req, res) {
         level: LOG_LEVELS.INFO
       });
 
-      return res.status(400).json({});
+      return SPOTIFY_API_STATUS_OUTPUT_FUNC_MAP.ERROR_400(res);
     });
 
-  if (response.status === 204) {
+  const { status } = response;
+
+  if (status === 204) {
     log({
       message: "Unable to get current playback: No active song",
       level: LOG_LEVELS.INFO
     });
 
-    return res.status(400).json({});
+    return res.status(204).json({
+      code: 204,
+      message: "Nothing is being played right now."
+    });
   }
 
   if (response.status === 401) {
@@ -38,12 +45,12 @@ export default async function getCurrentPlayback(req, res) {
       level: LOG_LEVELS.INFO
     });
 
-    return res.status(401).json({});
+    return SPOTIFY_API_STATUS_OUTPUT_FUNC_MAP.ERROR_401(res);
   }
 
   const { device, item, progress_ms } = response.data;
 
-  if (!item) return res.status(400).json({});
+  if (!item) return SPOTIFY_API_STATUS_OUTPUT_FUNC_MAP.ERROR_400;
 
   const { id, album, artists, duration_ms, name } = item;
 

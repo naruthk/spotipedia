@@ -78,10 +78,14 @@ export const AuthProvider = props => {
             accessToken: accessToken
           })
           .catch(err => {
+            setIsLoading(false);
             return;
           });
 
-        if (!userResponse || !playlistsResponse) return;
+        if (!userResponse || !playlistsResponse) {
+          setIsLoading(false);
+          return;
+        }
   
         setUser({
           user: userResponse.data,

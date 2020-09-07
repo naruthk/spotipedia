@@ -1,5 +1,6 @@
 import spotify from "./data";
 import { log, LOG_LEVELS } from "../../../src/utils/logger";
+import { SPOTIFY_API_STATUS_OUTPUT_FUNC_MAP } from "../../../src/utils/apisHelper";
 
 const resolveTracksinPlaylist = items => {
   return items.map(item => {
@@ -29,9 +30,11 @@ const resolveTracksinPlaylist = items => {
 }
 
 export default async function fetchPlaylistDetail(req, res) {
-  if (!req.body.accessToken) return res.status(401).send("Unauthorized access");
+  if (!req.body.accessToken)
+    return SPOTIFY_API_STATUS_OUTPUT_FUNC_MAP.ERROR_401(res);
 
-  if (!req.body.apiUrl) return res.status(400).send({});
+  if (!req.body.apiUrl)
+    return SPOTIFY_API_STATUS_OUTPUT_FUNC_MAP.ERROR_404(res);
 
   const response = await spotify
     .get(req.body.apiUrl,
@@ -49,7 +52,7 @@ export default async function fetchPlaylistDetail(req, res) {
         level: LOG_LEVELS.INFO
       });
 
-      return res.status(400).json({});
+      return SPOTIFY_API_STATUS_OUTPUT_FUNC_MAP.ERROR_400(res);
     });
 
   if (response.status === 401) {
@@ -58,7 +61,7 @@ export default async function fetchPlaylistDetail(req, res) {
       level: LOG_LEVELS.INFO
     });
 
-    return res.status(401).json(null);
+    return SPOTIFY_API_STATUS_OUTPUT_FUNC_MAP.ERROR_401(res);
   }
 
   const { items, limit, next, previous, total } = response.data;

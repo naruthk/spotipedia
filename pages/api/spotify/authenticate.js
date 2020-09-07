@@ -1,8 +1,10 @@
 import spotify from "./data";
 import { log, LOG_LEVELS } from "../../../src/utils/logger";
+import { SPOTIFY_API_STATUS_OUTPUT_FUNC_MAP } from "../../../src/utils/apisHelper";
 
 export default async (req, res) => {
-  if (!req.body.accessToken) return res.status(401).send("Unauthorized access");
+  if (!req.body.accessToken)
+    return SPOTIFY_API_STATUS_OUTPUT_FUNC_MAP.ERROR_401(res);
 
   const response = await spotify
     .get("/me",
@@ -23,7 +25,7 @@ export default async (req, res) => {
       throw err;
     });
   
-  if (!response) return res.status(400).json({});
+  if (!response) return SPOTIFY_API_STATUS_OUTPUT_FUNC_MAP.ERROR_400(res);
 
   const { display_name: displayName, country, images, product } = response.data;
 
