@@ -7,7 +7,7 @@ import Progress from '../player/Progress';
 import styles from "./Player.module.scss";
 
 const Player = () => (
-  <div className={styles.container}>
+  <div id="Player-Container" className={styles.container}>
     <Controls />
     <Progress />
     {/* TO-DO: Enable <Actions /> component after integrating Favorites */}

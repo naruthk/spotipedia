@@ -1,11 +1,9 @@
+import Boom from "@hapi/boom";
+
 import spotify from "./data";
 import { log, LOG_LEVELS } from "../../../src/utils/logger";
-import { SPOTIFY_API_STATUS_OUTPUT_FUNC_MAP } from "../../../src/utils/apisHelper";
 
 export default async (req, res) => {
-  if (!req.body.accessToken)
-    return SPOTIFY_API_STATUS_OUTPUT_FUNC_MAP.ERROR_401(res);
-
   const response = await spotify
     .get("/me",
       {
@@ -22,10 +20,10 @@ export default async (req, res) => {
         level: LOG_LEVELS.INFO
       });
 
-      throw err;
+      throw Boom.unauthorized();
     });
   
-  if (!response) return SPOTIFY_API_STATUS_OUTPUT_FUNC_MAP.ERROR_400(res);
+  if (!response) throw Boom.notFound();
 
   const { display_name: displayName, country, images, product } = response.data;
 

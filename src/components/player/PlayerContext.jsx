@@ -17,18 +17,28 @@ const getAccessToken = () => {
   return accessToken;
 };
 
+/**
+ * PlayerProvider controls and outputs any information pertaining to the
+ * user's interaction with the app. These interactions include actions such
+ * as playing and pausing a song to selecting a playlist and fetching the
+ * detail for that particular playlist.
+ */
 export const PlayerProvider = props => {
+  // States relating to controls and actions
   const [isPlaying, setIsPlaying] = useState(false);
   const [activeSong, setActiveSong] = useState(null);
   const [isOpeningSongDetail, setIsOpeningSongDetail] = useState(false);
   
+  // Other types of states
   const [selectedPlaylist, setSelectedPlaylist] = useState(null);
   const [selectedPlaylistDetail, setSelectedPlaylistDetail] = useState({});
-  
   const [selectedArtist, setSelectedArtist] = useState(null);
 
   const { user } = useContext(AuthContext);
 
+  /**
+   * Looks up the currently active song being played on an active device
+   */
   const fetchPlaybackStatus = async () => {
     const accessToken = getAccessToken();
     if (!accessToken) return;
@@ -38,7 +48,7 @@ export const PlayerProvider = props => {
         accessToken,
         market: user && user.country
       })
-      .catch(err => {
+      .catch(_ => {
         // TO-DO: Do something
       });
 
@@ -49,45 +59,32 @@ export const PlayerProvider = props => {
   };
 
   /**
-   * Looks up currently playing song and the device it is being played on
+   * Fetches songs from a particular playlist
+   * @param {string} apiUrl URL for retriving the playlist detail
    */
-  useEffect(() => {
-    fetchPlaybackStatus();
-    
-    return () => {
-      setActiveSong(null);
-      setIsPlaying(false);
-      return null;
-    }
-  }, []);
+  const fetchPlaylistDetail = async apiUrl => {
+    const accessToken = getAccessToken();
+    if (!accessToken || !apiUrl) return;
+
+    const response = await axios
+      .post(`${SPOTIFY_AUTH_BASE_URL}/fetch-playlist-detail`, {
+        accessToken,
+        apiUrl
+      })
+      .catch(_ => {
+        // TO-DO: Do something
+      });
+
+    if (!response) return;
+
+    setSelectedPlaylistDetail(response.data);
+  };
 
   /**
-   * Looks up songs for a particular playlist that is chosen
+   * Fetches the song to be played
+   * @param {object} param Contains the contextUri for retriving data and
+   * method for updating (pause or play)
    */
-  useEffect(() => {
-    const fetchPlaylistDetail = async () => {
-      const accessToken = getAccessToken();
-      if (!accessToken) return;
-
-      const response = await axios
-        .post(`${SPOTIFY_AUTH_BASE_URL}/fetch-playlist-detail`, {
-          accessToken,
-          apiUrl: selectedPlaylist && selectedPlaylist.tracks.href
-        })
-        .catch(err => {
-          // TO-DO: Do something
-        });
-
-      if (!response) return;
-
-      setSelectedPlaylistDetail(response.data);
-    };
-
-    fetchPlaylistDetail();
-    
-    return;
-  }, [selectedPlaylist]);
-
   const fetchUpdateCurrentPlayback = async ({
     contextUri,
     positionMs = 0,
@@ -105,6 +102,7 @@ export const PlayerProvider = props => {
         deviceId: activeSong && activeSong.device && activeSong.device.id
       })
       .catch(err => {
+        alert(`Unable to ${updateMethod}`)
         setIsPlaying(false);
       });
 
@@ -113,6 +111,11 @@ export const PlayerProvider = props => {
     if (contextUri) fetchPlaybackStatus();
   };
 
+  /**
+   * Skip to the previous song or forward to the next.
+   * Accordingly, the function also updates the active playback status.
+   * @param {string} direction 
+   */
   const skipPreviousOrNext = async direction => {
     const accessToken = getAccessToken();
     if (!accessToken) return;
@@ -122,7 +125,7 @@ export const PlayerProvider = props => {
         accessToken,
         skipDirection: direction
       })
-      .catch(err => {
+      .catch(_ => {
         // TO-DO: Do something
       });
 
@@ -130,6 +133,16 @@ export const PlayerProvider = props => {
 
     fetchPlaybackStatus();
   };
+
+  useEffect(() => {
+    fetchPlaybackStatus();
+    
+    return () => setActiveSong(null);
+  }, []);
+
+  useEffect(() => {
+    fetchPlaylistDetail(selectedPlaylist && selectedPlaylist.tracks.href);
+  }, [selectedPlaylist]);
 
   return (
     <PlayerContext.Provider
@@ -143,6 +156,7 @@ export const PlayerProvider = props => {
         selectedPlaylist,
         setSelectedPlaylist,
         selectedPlaylistDetail,
+        updatePlaylistDetail: apiUrl => fetchPlaylistDetail(apiUrl),
         selectedArtist,
         setSelectedArtist,
         skipPrevious: () => skipPreviousOrNext("previous"),

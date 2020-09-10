@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
 
 import { PlayerContext } from "../player/PlayerContext";
-import Playlists from "../feed/Playlists";
-import PlaylistDetail from "../feed/PlaylistDetail";
+import Playlists from "../playlist/Playlists";
+import PlaylistDetail from "../playlist/PlaylistDetail";
 import PlaybackDetail from "../playback/PlaybackDetail";
 
 import styles from "./Detail.module.scss";

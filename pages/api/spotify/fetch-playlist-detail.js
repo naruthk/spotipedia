@@ -1,6 +1,7 @@
+import Boom from "@hapi/boom";
+
 import spotify from "./data";
 import { log, LOG_LEVELS } from "../../../src/utils/logger";
-import { SPOTIFY_API_STATUS_OUTPUT_FUNC_MAP } from "../../../src/utils/apisHelper";
 
 const resolveTracksinPlaylist = items => {
   return items.map(item => {
@@ -30,11 +31,7 @@ const resolveTracksinPlaylist = items => {
 }
 
 export default async function fetchPlaylistDetail(req, res) {
-  if (!req.body.accessToken)
-    return SPOTIFY_API_STATUS_OUTPUT_FUNC_MAP.ERROR_401(res);
-
-  if (!req.body.apiUrl)
-    return SPOTIFY_API_STATUS_OUTPUT_FUNC_MAP.ERROR_404(res);
+  if (!req.body.apiUrl) throw Boom.notAcceptable("Missing URL");
 
   const response = await spotify
     .get(req.body.apiUrl,
@@ -51,18 +48,9 @@ export default async function fetchPlaylistDetail(req, res) {
         err,
         level: LOG_LEVELS.INFO
       });
-
-      return SPOTIFY_API_STATUS_OUTPUT_FUNC_MAP.ERROR_400(res);
     });
 
-  if (response.status === 401) {
-    log({
-      message: "Unable to get playlist detail: Token expired",
-      level: LOG_LEVELS.INFO
-    });
-
-    return SPOTIFY_API_STATUS_OUTPUT_FUNC_MAP.ERROR_401(res);
-  }
+  if (!response) throw Boom.notFound();
 
   const { items, limit, next, previous, total } = response.data;
 

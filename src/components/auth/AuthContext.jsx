@@ -9,6 +9,10 @@ import { getHashParams, generateRandomString } from "../../utils/strings";
 export const AuthContext = React.createContext();
 export const useAuthContext = () => useContext(AuthContext);
 
+/**
+ * The following keys are required for authenticating with 
+ * Spotify Developer APIs
+ */
 const stateKey = "spotify_auth_state";
 const SPOTIFY_AUTH_BASE_URL = "/api/spotify";
 const SCOPES_LIST = process.env.NEXT_PUBLIC_SPOTIFY_SCOPE.split(",");
@@ -28,6 +32,7 @@ export const AuthProvider = props => {
   const resetData = () => {
     localStorage.removeItem(stateKey);
     localStorage.removeItem("token");
+
     Router.push("/");
   };
 
@@ -41,63 +46,64 @@ export const AuthProvider = props => {
     url += '&redirect_uri=' + encodeURIComponent(process.env.NEXT_PUBLIC_SPOTIFY_REDIRECT_URI);
     url += '&state=' + encodeURIComponent(state);
 
-    // Stores the generated state key, then redirects to the authentication URL
     localStorage.setItem(stateKey, state);
+
     window.location.href = url;
   };
 
   /**
-   *  On every refresh, determines if the user has been logged in before using
-   *  stored sessions
+   *  On every refresh, determines if the user has been logged
+   *  in before using the stored session
    */
   useEffect(() => {
     const refresh = async () => {
       const params = getHashParams();
       let { access_token: accessToken, state } = params;
 
-      const storedState = localStorage.getItem(stateKey);
-
       if (!accessToken) accessToken = localStorage.getItem("token");
+      
+      const storedState = localStorage.getItem(stateKey);
       if (accessToken && (state === null || state !== storedState)) {
         resetData();
       }
-      if (accessToken) {
-        setIsLoading(true);
 
-        // Loads the user's profile and saved playlists
-        const userResponse = await axios
-          .post(`${SPOTIFY_AUTH_BASE_URL}/authenticate`, {
-            accessToken: accessToken
-          })
-          .catch(err => {
-            return;
-          });
+      if (!accessToken) return;
+    
+      setIsLoading(true);
 
-        const playlistsResponse = await axios
-          .post(`${SPOTIFY_AUTH_BASE_URL}/fetch-playlists`, {
-            accessToken: accessToken
-          })
-          .catch(err => {
-            setIsLoading(false);
-            return;
-          });
-
-        if (!userResponse || !playlistsResponse) {
+      // (1) Fetches user's profile and saved playlists
+      const userResponse = await axios
+        .post(`${SPOTIFY_AUTH_BASE_URL}/authenticate`, {
+          accessToken: accessToken
+        })
+        .catch(_ => {
           setIsLoading(false);
-          return;
-        }
-  
-        setUser({
-          user: userResponse.data,
-          playlists: playlistsResponse.data
         });
 
-        setIsLoggedIn(true);
-        setIsLoading(false);
+      if (!userResponse) return;
 
-        localStorage.setItem("token", accessToken);
-        Router.replace("/app");
-      }
+      // (2) Fetches playlists from the user's account
+      const playlistsResponse = await axios
+        .post(`${SPOTIFY_AUTH_BASE_URL}/fetch-playlists`, {
+          accessToken: accessToken
+        })
+        .catch(_ => {
+          setIsLoading(false);
+        });
+
+      if (!playlistsResponse) return;
+
+      setUser({
+        user: userResponse.data,
+        playlists: playlistsResponse.data
+      });
+
+      setIsLoggedIn(true);
+      setIsLoading(false);
+
+      localStorage.setItem("token", accessToken);
+
+      Router.replace("/app");
     };
 
     refresh();
