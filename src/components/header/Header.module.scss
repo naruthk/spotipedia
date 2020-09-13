@@ -1,21 +1,30 @@
 .container {
   @apply m-5;
+}
 
-  nav {
-    ul {
-      @apply flex;
-    
-      :last-child {
-        @apply mr-0;
-      }
-    
-      li {
-        @apply mr-10;
-      }
+.navigation {
+  @apply flex justify-between;
+
+  ul {
+    @apply flex flex-row;
+  
+    :last-child {
+      @apply mr-0;
+    }
+  
+    li {
+      @apply mr-4;
     }
   }
 }
 
-.home {
+.primaryArea {
   @apply font-bold;
+}
+
+.secondaryArea {}
+
+.loginBtn {
+  @apply px-4 py-2 bg-gray-900 rounded-lg;
+  @apply text-green-300 font-bold;
 }

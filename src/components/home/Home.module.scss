@@ -1,0 +1,75 @@
+.container {
+  @apply flex flex-col justify-center items-center;
+}
+
+h1.title {
+  @apply text-2xl font-bold leading-normal mb-4;
+}
+
+.featured {
+  @apply flex flex-col items-center;
+  @apply text-center mt-10 mb-20;
+
+  .title {
+    @apply text-5xl mb-2;
+  }
+  .subtitle {
+    @apply text-xl;
+  }
+}
+
+.landingPageBlock {
+  max-width: 900px;
+  @apply mb-10;
+
+  p.landingPageParagraph {
+    @apply text-lg leading-normal;
+  }
+
+  h2.title {
+    @apply text-4xl mb-4 leading-tight;
+  }
+}
+
+.landingPageTextBlock {
+  @apply m-5;
+  @media screen and (min-width: 500px) {
+    @apply m-10;
+  }
+}
+
+.promotePlayer {
+  @media screen and (min-width: 500px) {
+    @apply flex items-center;
+  }
+  .promotePlayerImage {
+    @media screen and (min-width: 500px) {
+      max-width: 400px;
+      @apply float-left mr-5;
+    }
+  }
+}
+
+.promoteUserInterface {
+  @apply my-20 text-center;
+
+  img.interfaceImage {
+    @apply my-4;
+  }
+}
+
+.tryApp {
+  @apply bg-gray-900 w-screen text-center;
+  @apply py-12;
+  @apply border-t-8 border-b-8 border-gray-800;
+
+  p.text {
+    @apply text-xl text-white;
+  }
+
+  button.btn {
+    @apply border-0 cursor-pointer outline-none rounded-lg bg-green-600;
+    @apply text-lg font-bold text-white;
+    @apply mt-8 px-12 py-4;
+  }
+}
